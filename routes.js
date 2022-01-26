@@ -59,7 +59,7 @@ router.get('/courses/:id', asyncHandler ( async (req, res) => {
 }));
 
 //Route to create a new course entry
-router.post('/courses', asyncHandler ( async (req, res, next) => {
+router.post('/courses', authenticateUser ,asyncHandler ( async (req, res) => {
     try {
         const course = await Course.create(req.body);
         res.status(201).location(`/api/courses/${course.id}`).end();
@@ -76,7 +76,7 @@ router.post('/courses', asyncHandler ( async (req, res, next) => {
 }));
 
 //Route to update a course entry
-router.put('/courses/:id', asyncHandler(async(req, res) => {
+router.put('/courses/:id', authenticateUser ,asyncHandler(async(req, res) => {
     try {
         const course = await Course.findByPk(req.params.id);
         await course.update(req.body);
@@ -94,7 +94,7 @@ router.put('/courses/:id', asyncHandler(async(req, res) => {
 }));
 
 //Route to delete a course entry
-router.delete('/courses/:id', asyncHandler ( async (req, res) => {
+router.delete('/courses/:id', authenticateUser ,asyncHandler ( async (req, res) => {
     let courseId = req.params.id;
     await Course.destroy({ where: {id: courseId}});
     res.status(204).send();

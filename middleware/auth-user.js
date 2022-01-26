@@ -24,6 +24,10 @@ exports.authenticateUser = async (req, res, next) => {
     } else {
         message = 'Auth header not found';
     }
-
-    next();
+    if (message) {
+        console.warn(message);
+        res.status(401).json({ message: 'User Authentication failed'});
+    } else {
+        next();
+    }
 };
